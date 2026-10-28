@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Login · Glucose Companion{% endblock %}
+{% block content %}
+<section class="auth-wrap"><div class="auth-intro"><p class="eyebrow">Welcome back</p><h1>Login</h1><p>Enter the contact number you used to register and your password.</p><p class="small">You can open login directly. Only registered accounts can sign in.</p></div>
+<form id="login-form" class="panel auth-form"><label>Contact number<input name="contact" type="tel" autocomplete="tel" required></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button id="login-submit" type="submit">Login</button><p id="login-gate-message" class="form-message" aria-live="polite"></p><p class="small">New here? <a href="{{ url_for('web.register_page') }}">Register first</a>.</p></form></section>
+{% endblock %}

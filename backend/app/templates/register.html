@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Register · Glucose Companion{% endblock %}
+{% block content %}
+<section class="auth-wrap"><div class="auth-intro"><p class="eyebrow">Get started</p><h1>Create your account</h1><p>Register with your name, email, contact number, and a password. You can then log in using your contact number and password.</p></div>
+<form id="register-form" class="panel auth-form"><label>Name<input name="name" autocomplete="name" maxlength="100" required></label><label>Email<input name="email" type="email" autocomplete="email" maxlength="254" required></label><label>Contact number<input name="contact" type="tel" autocomplete="tel" minlength="7" maxlength="25" required></label><label>Password<input name="password" type="password" autocomplete="new-password" minlength="10" required><small>Use at least 10 characters.</small></label><button type="submit">Register</button><p class="form-message" aria-live="polite"></p><p class="small">Already registered? <a href="{{ url_for('web.login_page') }}">Login</a>.</p></form></section>
+{% endblock %}

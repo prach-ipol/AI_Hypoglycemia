@@ -1,0 +1,6 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+ml/artifacts/*.joblib
+ml/artifacts/*.json

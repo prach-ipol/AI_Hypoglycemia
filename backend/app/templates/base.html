@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b766d"><title>{% block title %}Glucose Companion{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="{{ url_for('web.home') }}"><span class="brand-mark">G</span> Glucose Companion</a>
+    <nav aria-label="Main navigation">
+      <a class="{% if page == 'home' %}active{% endif %}" href="{{ url_for('web.home') }}">Home</a>
+      <a class="{% if page == 'intake' %}active{% endif %}" href="{{ url_for('web.intake') }}">Intake Analysis</a>
+      <a class="{% if page == 'login' %}active{% endif %}" href="{{ url_for('web.login_page') }}">Login</a>
+      <a class="nav-register {% if page == 'register' %}active{% endif %}" href="{{ url_for('web.register_page') }}">Register</a>
+    </nav>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer class="footer">
+    <div class="footer-copy"><h2>Feedback</h2><p>Send a message about your experience or a question about the app.</p><p class="small">For medical help, contact your healthcare professional. Do not use this form for emergencies.</p></div>
+    <form id="feedback-form" class="feedback-form">
+      <label>Name<input name="name" autocomplete="name" maxlength="100" required></label>
+      <label>Contact number<input name="contact" type="tel" autocomplete="tel" maxlength="25" required></label>
+      <label>Message<textarea name="message" rows="3" maxlength="2000" required></textarea></label>
+      <button type="submit">Send message</button><p class="form-message" aria-live="polite"></p>
+    </form>
+  </footer>
+  <dialog id="register-required-dialog" class="site-dialog"><div class="dialog-content"><button type="button" class="dialog-close" aria-label="Close" data-close-dialog>×</button><p class="eyebrow">Account required</p><h2>Register first</h2><p>If this contact number is not registered, create an account to continue. Registration is free.</p><a class="button" href="{{ url_for('web.register_page') }}">Go to registration</a></div></dialog>
+  <dialog id="login-required-dialog" class="site-dialog"><div class="dialog-content"><button type="button" class="dialog-close" aria-label="Close" data-close-dialog>×</button><p class="eyebrow">Sign in required</p><h2>Login first</h2><p>Register and log in before analyzing an intake.</p><a class="button" href="{{ url_for('web.login_page') }}">Go to login</a><a class="text-link" href="{{ url_for('web.register_page') }}">Need to register?</a></div></dialog>
+  <script src="{{ url_for('static', filename='site.js') }}" defer></script>
+</body>
+</html>

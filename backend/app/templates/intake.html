@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Intake analysis · Glucose Companion{% endblock %}
+{% block content %}
+<section class="page-heading"><p class="eyebrow">Nutrition estimate</p><h1>Intake Analysis</h1><p>Check the estimated nutrition in a food portion. Values are based on the supplied food dataset and are estimates. You can search and enter details before logging in; login is required to analyze.</p></section>
+<div class="analysis-layout"><form id="intake-form" class="panel form-grid">
+  <label class="wide">Intake name / food item<input id="intake-name" name="intake_name" list="food-options" placeholder="Search, then select a food" autocomplete="off" required><datalist id="food-options"></datalist><small>Choose a food item from the suggestions.</small></label>
+  <label>Portion size (g)<input name="portion_grams" type="number" min="0.01" max="5000" step="0.01" placeholder="e.g. 150" required></label>
+  <label>Intake time (24-hour)<input name="intake_time" type="text" inputmode="numeric" placeholder="HH:MM, e.g. 14:30" pattern="(?:[01]\d|2[0-3]):[0-5]\d" maxlength="5" required><small>Use 00:00 to 23:59.</small></label>
+  <div class="wide"><button type="submit">Analyze intake</button><p id="intake-message" class="form-message" aria-live="polite"></p></div>
+</form>
+<section id="nutrition-result" class="panel result-panel" hidden aria-live="polite"><div class="result-title"><div><p class="eyebrow">Estimated nutrition</p><h2 id="result-name"></h2></div><span id="result-time" class="time-chip"></span></div><p id="result-portion" class="small"></p>
+  <div class="table-wrap"><table><thead><tr><th>Nutrient</th><th>Amount in this portion</th></tr></thead><tbody id="nutrition-rows"></tbody></table></div>
+  <p class="small">Estimate calculated from the supplied CSV reference values, scaled by portion weight. Actual nutrition varies with ingredients and preparation.</p>
+</section></div>
+<div class="prediction-note"><strong>Risk prediction is not currently available.</strong> The supplied food dataset contains no glucose history or hypoglycemia labels.</div>
+{% endblock %}
