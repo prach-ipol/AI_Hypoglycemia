@@ -21,8 +21,18 @@ def create_app(test_config=None):
         app.config.update(test_config)
     if not os.getenv("JWT_SECRET"):
         app.logger.warning("JWT_SECRET is unset; using a temporary key. Configure a persistent secret in .env.")
-    origins = [x.strip() for x in os.getenv("CORS_ORIGINS", "").split(",") if x.strip()]
-    CORS(app, resources={r"/api/*": {"origins": origins}})
+    configured_origins = [
+        x.strip() for x in os.getenv("CORS_ORIGINS", "").split(",") if x.strip()
+    ]
+    # The mobile app does not need CORS, but Flutter web does. Keep local
+    # development usable when CORS_ORIGINS is not configured; deployments
+    # should always set an explicit allow-list.
+    origins = configured_origins or "*"
+    CORS(
+        app,
+        resources={r"/api/*": {"origins": origins}},
+        allow_headers=["Content-Type", "Authorization"],
+    )
     app.extensions["database"] = app.config.get("DATABASE_ADAPTER") or Database.from_env()
     app.register_blueprint(api, url_prefix="/api")
     app.register_blueprint(web)

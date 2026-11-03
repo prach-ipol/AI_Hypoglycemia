@@ -26,15 +26,34 @@ class ApiService {
 
   Uri _uri(String path) => Uri.parse('${AppConfig.apiBaseUrl}$path');
 
-  Future<Map<String, dynamic>> get(String path) async =>
-      _read(await http.get(_uri(path), headers: _headers));
+  Future<Map<String, dynamic>> get(String path) async {
+    try {
+      return _read(await http.get(_uri(path), headers: _headers));
+    } on http.ClientException {
+      throw ApiException(
+        'Cannot reach the backend at ${AppConfig.apiBaseUrl}. '
+        'For a physical Android phone, rebuild with your computer LAN IP '
+        'using --dart-define=API_BASE_URL=http://YOUR_PC_IP:5000.',
+      );
+    }
+  }
 
   Future<Map<String, dynamic>> post(
     String path,
     Map<String, dynamic> body,
-  ) async => _read(
-    await http.post(_uri(path), headers: _headers, body: jsonEncode(body)),
-  );
+  ) async {
+    try {
+      return _read(
+        await http.post(_uri(path), headers: _headers, body: jsonEncode(body)),
+      );
+    } on http.ClientException {
+      throw ApiException(
+        'Cannot reach the backend at ${AppConfig.apiBaseUrl}. '
+        'For a physical Android phone, rebuild with your computer LAN IP '
+        'using --dart-define=API_BASE_URL=http://YOUR_PC_IP:5000.',
+      );
+    }
+  }
 
   Map<String, dynamic> _read(http.Response response) {
     Map<String, dynamic> data;

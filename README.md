@@ -25,7 +25,7 @@ Educational/supportive project. It does not diagnose, recommend insulin or medic
 4. Copy the provided CSV to `data/raw/Indian_Food_Nutrition_Processed.csv` (already present at project root); or set `FOOD_CSV_PATH` to its location.
 5. Start backend with `.\.venv\Scripts\python.exe run.py`. Open `http://127.0.0.1:5000/` for the backend landing page, `/health` for MongoDB status, and use the endpoint guide in `docs/API.md` (Flask does not provide generated Swagger UI).
 
-The backend also serves browser pages at `/` (home), `/intake` (nutrition analysis), `/register`, and `/login`. Intake time uses 24-hour `HH:MM`; nutrition estimates are scaled from the CSV reference values. Register with name, email, contact number, and password; log in using contact number and password. Each page includes a feedback form. MongoDB must be running for registration, login, and feedback submissions. Login is available directly; an unregistered contact receives a register-first prompt. Successful logins and analyzed intakes are recorded in MongoDB.
+The backend also serves browser pages at `/` (home), `/intake` (nutrition analysis), `/register`, and `/login`. Intake time uses 24-hour `HH:MM`; nutrition estimates are scaled from the CSV reference values. Register with name, email, contact number, and password; log in using contact number and password. Each page includes a feedback form. MongoDB must be running for registration, login, and feedback submissions. Login is available directly; an unregistered contact receives a register-first prompt. Successful logins and analyzed intakes are recorded in MongoDB. For Flutter web, the default API URL is `http://127.0.0.1:5000`; for the Android emulator it is `http://10.0.2.2:5000`. Set `CORS_ORIGINS` to a comma-separated allow-list for deployed clients.
 
 ## ML data and training
 
@@ -33,7 +33,7 @@ Put a suitable CSV in `data/raw/` and set `ML_DATASET_PATH`, `ML_TARGET_COLUMN`,
 
 ## Flutter
 
-Install Flutter, JDK 17, and Android SDK command-line tools (no Android Studio required) using `mobile_app/README.md`. From `mobile_app`, run `flutter pub get` then `flutter build apk --release`. The APK is written to `mobile_app/build/app/outputs/flutter-apk/app-release.apk`. Configure `API_BASE_URL` for a physical device's backend LAN address; the default `http://10.0.2.2:5000` targets the Android emulator. Local HTTP is for development; use HTTPS for deployed apps.
+Install Flutter, JDK 17, and Android SDK command-line tools (no Android Studio required) using `mobile_app/README.md`. From `mobile_app`, run `flutter pub get` then `flutter build apk --release`. The APK is written to `mobile_app/build/app/outputs/flutter-apk/app-release.apk`. The default `http://10.0.2.2:5000` targets only the Android emulator. For a physical phone, rebuild with `flutter build apk --release --dart-define=API_BASE_URL=http://YOUR_PC_IP:5000`, where `YOUR_PC_IP` is the computer's Wi-Fi address from `ipconfig`. Local HTTP is for development; use HTTPS for deployed apps.
 
 ## Privacy and security
 
@@ -42,3 +42,28 @@ Passwords are hashed, personal endpoints require bearer tokens, and records are 
 ## Checks
 
 Install dependencies, then run `pytest` in `backend`. Tests use an in-memory database adapter where practical. MongoDB integration requires a configured MongoDB instance. This project has not been clinically validated.
+
+
+
+
+cd backend
+   py -3.12 -m venv .venv
+   .\.venv\Scripts\python.exe -m pip install --upgrade pip
+   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+   .\.venv\Scripts\python.exe run.py
+
+
+   In 2nd terminal 
+   cd mobile_app
+   python -m ml.train
+   flutter doctor
+   flutter pub get
+   flutter run
+
+To build and generate APK for mobile use 
+flutter build apk --release
+
+
+
+
+

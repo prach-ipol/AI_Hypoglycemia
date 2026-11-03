@@ -46,10 +46,19 @@ The app manifest permits local HTTP for this development project. Use an HTTPS b
 
 ## Backend address
 
-The default API address `http://10.0.2.2:5000` is for the Android emulator. For a physical phone and computer on the same Wi-Fi network, build with your computer's LAN IP, for example:
+The default API address `http://10.0.2.2:5000` is only for the Android emulator. For a physical phone and computer on the same Wi-Fi network, rebuild with your computer's LAN IP. On this development computer, the current Wi-Fi address is `192.168.0.223`:
 
 ```powershell
-flutter build apk --release --dart-define=API_BASE_URL=http://192.168.1.20:5000
+flutter build apk --release --dart-define=API_BASE_URL=http://192.168.0.223:5000
+```
+
+If the address changes, run `ipconfig` and replace it in the command. Keep the phone and computer on the same Wi-Fi network.
+
+For a USB-connected phone, you can avoid LAN/firewall setup with Android platform tools:
+
+```powershell
+adb reverse tcp:5000 tcp:5000
+flutter build apk --release --dart-define=API_BASE_URL=http://127.0.0.1:5000
 ```
 
 The Flask backend must be reachable on port 5000 from the device; allow it through the computer firewall on a trusted private network. Do not expose the development HTTP server to the public internet.
