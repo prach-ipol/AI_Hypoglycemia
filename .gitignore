@@ -1,0 +1,5 @@
+.venv/
+.vscode/
+mobile_app/android/.gradle-user-home/
+__pycache__/
+.env

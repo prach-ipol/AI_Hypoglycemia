@@ -25,7 +25,7 @@ Educational/supportive project. It does not diagnose, recommend insulin or medic
 4. Copy the provided CSV to `data/raw/Indian_Food_Nutrition_Processed.csv` (already present at project root); or set `FOOD_CSV_PATH` to its location.
 5. Start backend with `.\.venv\Scripts\python.exe run.py`. Open `http://127.0.0.1:5000/` for the backend landing page, `/health` for MongoDB status, and use the endpoint guide in `docs/API.md` (Flask does not provide generated Swagger UI).
 
-The backend also serves browser pages at `/` (home), `/intake` (nutrition analysis), `/register`, and `/login`. Intake time uses 24-hour `HH:MM`; nutrition estimates are scaled from the CSV reference values. Register with name, email, contact number, and password; log in using contact number and password. Each page includes a feedback form. MongoDB must be running for registration, login, and feedback submissions. Login is available directly; an unregistered contact receives a register-first prompt. Successful logins and analyzed intakes are recorded in MongoDB. For Flutter web, the default API URL is `http://127.0.0.1:5000`; for the Android emulator it is `http://10.0.2.2:5000`. Set `CORS_ORIGINS` to a comma-separated allow-list for deployed clients.
+The backend also serves browser pages at `/` (home), `/intake` (nutrition analysis), `/register`, and `/login`. Intake time uses 24-hour `HH:MM`; nutrition estimates are scaled from the CSV reference values. Register with name, email, contact number, and password; log in using contact number and password. Each page includes a feedback form. MongoDB must be running for registration, login, and feedback submissions. Login is available directly; an unregistered contact receives a register-first prompt. Successful logins and analyzed intakes are recorded in MongoDB. The Flutter development default targets this computer at `http://192.168.1.95:5000`; use `http://10.0.2.2:5000` only for the Android emulator and override `API_BASE_URL` for deployed clients.
 
 ## ML data and training
 
@@ -37,6 +37,7 @@ Install Flutter, JDK 17, and Android SDK command-line tools (no Android Studio r
 
 ## Privacy and security
 
+cd 
 Passwords are hashed, personal endpoints require bearer tokens, and records are scoped to the authenticated user. Configure a high-entropy JWT secret and MongoDB access controls, backups, TLS, and retention policy. Delete account data through the authenticated account deletion endpoint. Avoid logging personal health information. Do not commit real patient data, `.env`, or model files from untrusted sources.
 
 ## Checks
@@ -60,8 +61,21 @@ cd backend
    flutter pub get
    flutter run
 
-To build and generate APK for mobile use 
+to build APK 
 flutter build apk --release
+
+
+To build and generate APK for a physical phone (bakes in this PC's current Wi-Fi IP):
+   cd mobile_app
+   .uild_physical_apk.ps1
+
+Physical phone notes:
+- Phone and laptop must be on the same Wi-Fi/hotspot, and the backend must be running.
+- If the laptop's IP changes, the app scans the Wi-Fi network and reconnects
+  automatically. You can also tap the gear icon (top-right) -> Auto-find, or type
+  the laptop IP from `ipconfig` (e.g. 192.168.15.189:5000) and tap Save.
+- If it is still not found, allow port 5000 in an Administrator PowerShell:
+  New-NetFirewallRule -DisplayName 'Glucose Companion backend' -Direction Inbound -Protocol TCP -LocalPort 5000 -Action Allow -Profile Any
 
 
 

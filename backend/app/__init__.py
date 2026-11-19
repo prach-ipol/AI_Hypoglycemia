@@ -27,7 +27,13 @@ def create_app(test_config=None):
     # The mobile app does not need CORS, but Flutter web does. Keep local
     # development usable when CORS_ORIGINS is not configured; deployments
     # should always set an explicit allow-list.
-    origins = configured_origins or "*"
+    # `flutter run -d chrome` serves the app on a random localhost port, so
+    # always allow any localhost / 127.0.0.1 port alongside the allow-list.
+    origins = (
+        configured_origins + [r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"]
+        if configured_origins
+        else "*"
+    )
     CORS(
         app,
         resources={r"/api/*": {"origins": origins}},

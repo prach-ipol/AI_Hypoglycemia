@@ -46,11 +46,24 @@ The app manifest permits local HTTP for this development project. Use an HTTPS b
 
 ## Backend address
 
-The default API address `http://10.0.2.2:5000` is only for the Android emulator. For a physical phone and computer on the same Wi-Fi network, rebuild with your computer's LAN IP. On this development computer, the current Wi-Fi address is `192.168.0.223`:
+The default API address `http://10.0.2.2:5000` is only for the Android emulator. For a physical phone and computer on the same Wi-Fi network, rebuild with your computer's LAN IP. On this development computer, the current Wi-Fi address is `192.168.1.95`:
 
 ```powershell
-flutter build apk --release --dart-define=API_BASE_URL=http://192.168.0.223:5000
+flutter build apk --release --dart-define=API_BASE_URL=http://192.168.1.95:5000
 ```
+
+To detect the computer's current private IP automatically and build the physical-device APK, run `./build_physical_apk.ps1` from PowerShell. Do not install an APK built with the emulator-only `http://10.0.2.2:5000` address on a physical phone.
+
+### Recovering a locked Gradle cache
+
+If Gradle reports that `android/.gradle/9.3.1/fileHashes` is locked, close any other Flutter/Gradle build first, then run:
+
+```powershell
+Get-Process java,dart,gradle,flutter -ErrorAction SilentlyContinue | Stop-Process -Force
+Remove-Item -LiteralPath .\android\.gradle\9.3.1\fileHashes\fileHashes.lock -Force -ErrorAction SilentlyContinue
+```
+
+Then run `./build_physical_apk.ps1` again.
 
 If the address changes, run `ipconfig` and replace it in the command. Keep the phone and computer on the same Wi-Fi network.
 
